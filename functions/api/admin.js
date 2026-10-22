@@ -1,11 +1,5 @@
 
 export async function onRequestGet({ request, env }) {
-  if (!env.DB || !env.ADMIN_PASSWORD) {
-    return Response.json(
-      { error: "管理画面の設定が不足しています" },
-      { status: 500 }
-    );
-  }
 
 
   try {
