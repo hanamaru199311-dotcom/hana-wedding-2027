@@ -7,7 +7,6 @@ export async function onRequestGet({ request, env }) {
     );
   }
 
-  const password = request.headers.get("X-Admin-Password") || "";
 
   try {
     const result = await env.DB.prepare(
