@@ -9,13 +9,6 @@ export async function onRequestGet({ request, env }) {
 
   const password = request.headers.get("X-Admin-Password") || "";
 
-  if (password !== env.ADMIN_PASSWORD) {
-    return Response.json(
-      { error: "パスワードが違います" },
-      { status: 401 }
-    );
-  }
-
   try {
     const result = await env.DB.prepare(
       "SELECT * FROM wedding_rsvps ORDER BY created_at DESC"
