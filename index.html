@@ -161,7 +161,20 @@ document.getElementById('submitReply')?.addEventListener('click',async()=>{
   const r=await fetch('/api/rsvp',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(Object.fromEntries(new FormData(f)))});
   const j=await r.json().catch(()=>({}));
   if(!r.ok)throw new Error(j.error||'送信できませんでした');
-  f.innerHTML='<div role="status" aria-live="polite" style="text-align:center;padding:56px 16px;"><h3 style="margin:0 0 16px;">ご回答を受け付けました。</h3><p style="margin:0;">ありがとうございます。</p></div>'; f.scrollIntoView({behavior:'smooth',block:'start'});
+  // 送信完了後はフォーム・確認内容・操作ボタンをすべて隠す。
+  f.style.display='none';
+  const replySection=document.getElementById('reply');
+  const heading=replySection?.querySelector('.wrap > .center');
+  if(heading)heading.style.display='none';
+  const complete=document.createElement('div');
+  complete.id='rsvp-complete';
+  complete.setAttribute('role','status');
+  complete.style.cssText='max-width:650px;margin:35px auto;padding:58px 24px;text-align:center;background:#f7f2e8;color:#193a32;border:1px solid #c7ad7b;border-radius:8px;';
+  complete.innerHTML='<h2 style="font-size:clamp(24px,5vw,34px);margin:0 0 18px;">ご回答を受け付けました。</h2><p style="font-size:17px;line-height:2;margin:0;">ありがとうございます。</p>';
+  f.insertAdjacentElement('afterend',complete);
+  document.querySelector('.fixed-response')?.remove();
+  document.body.style.paddingBottom='0';
+  complete.scrollIntoView({behavior:'smooth',block:'center'});
  }catch(e){s.textContent=e.message;b.disabled=false;b.textContent='この内容で送信する'}
 });
 $('#copy')?.addEventListener('click',async()=>{try{await navigator.clipboard.writeText(summaryText);$('#copyStatus').textContent='コピーしました';}catch(e){$('#copyStatus').textContent='コピーできない場合は回答内容を長押ししてコピーしてください。'}});
