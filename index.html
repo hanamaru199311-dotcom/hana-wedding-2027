@@ -161,9 +161,7 @@ document.getElementById('submitReply')?.addEventListener('click',async()=>{
   const r=await fetch('/api/rsvp',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(Object.fromEntries(new FormData(f)))});
   const j=await r.json().catch(()=>({}));
   if(!r.ok)throw new Error(j.error||'送信できませんでした');
-  s.textContent='回答を受け付けました。受付番号：'+j.id;
-  b.textContent='送信済み';
-  f.querySelectorAll('input,select,textarea').forEach(e=>e.disabled=true);
+  f.innerHTML='<div role="status" aria-live="polite" style="text-align:center;padding:56px 16px;"><h3 style="margin:0 0 16px;">ご回答を受け付けました。</h3><p style="margin:0;">ありがとうございます。</p></div>'; f.scrollIntoView({behavior:'smooth',block:'start'});
  }catch(e){s.textContent=e.message;b.disabled=false;b.textContent='この内容で送信する'}
 });
 $('#copy')?.addEventListener('click',async()=>{try{await navigator.clipboard.writeText(summaryText);$('#copyStatus').textContent='コピーしました';}catch(e){$('#copyStatus').textContent='コピーできない場合は回答内容を長押ししてコピーしてください。'}});
